@@ -1,0 +1,20 @@
+Visual Skills — AI film director skills for Claude agents
+Copyright (c) 2026 Serge Shima
+
+Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).
+Any use, copy, or derivative of these skills must credit the author:
+
+  Serge Shima — https://t.me/aimastersme · https://sergeshima.com · https://aimasters.me
+  Source: https://github.com/smixs/visual-skills
+
+Full license text: LICENSE file or https://creativecommons.org/licenses/by/4.0/
+
+Third-party acknowledgement
+---------------------------
+Several methods were adapted — rewritten, not copied — after studying
+https://github.com/agentara/skills (MIT License, Copyright (c) 2026 agentara):
+de-slop discipline (image/references/de-slop.md), story-arc selection
+(video/references/patterns-and-genres.md §4), storyboard grid sizing from scene
+duration (image/references/multi-panel.md), the Style DNA + Reject Checklist
+method (image/references/patterns/poster-illustration.md), and named deck styles
+(image/references/slides.md).
