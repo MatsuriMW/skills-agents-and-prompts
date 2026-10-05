@@ -2,9 +2,6 @@ fastapi
 uvicorn
 openai
 python-dotenv
-tushare
+akshare
 pandas
-numpy
-faiss-cpu
-sentence-transformers
 requests

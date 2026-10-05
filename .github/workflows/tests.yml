@@ -1,0 +1,19 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # akshare 不装：测试里用假的代替，不联网
+      - run: pip install pytest numpy pandas fastapi httpx openai python-dotenv requests
+      - run: python -m pytest tests -q
+      - name: 所有 Python 文件至少能编译
+        run: python -m compileall -q skills agents

@@ -2,7 +2,15 @@
 
 马自立自己写的（或者魔改过的）Claude skill、agent 和提示词，备份在一处，免得忘了每个是干嘛的。
 
-大部分东西的正本在本机各处，这里是副本：改了之后跑 `./sync.sh "改了什么"`，会从本机重新复制、提交、推送。只有 `prompts/claude-project-*.md` 是从 claude.ai 云端抄下来的，要手动更新。
+大部分东西的正本在本机各处，这里是副本。`sync.sh` 两个方向都能同步：
+
+- **本机 → 仓库**：本机改了之后跑 `./sync.sh "改了什么"`，会从本机重新复制、提交、推送。
+- **仓库 → 本机**：在网页上（比如让 Claude 在这个仓库里）改了东西，跑 `./sync.sh --pull` 拉下来写回本机正本；加 `-n` 只看会改哪些文件。写回前被覆盖、删除的文件会备份到 `~/.cache/skills-sync-backup/`。
+- 两边都改了也没事：脚本会让你先把本机改动提交进仓库，再用 git 合并两边、写回本机。仓库有本机还没写回的新提交时，正向同步会停下，不会用本机的旧文件把新改动盖掉。
+
+只有 `prompts/claude-project-*.md` 是从 claude.ai 云端抄下来的，要手动更新；`gudianshi-skill` 的正本在 claude.ai，只往仓库同步、不往回写。
+
+`tests/` 里是脚本的测试（写稿检查、两个检索脚本、invest-agent），`python3 -m pytest tests` 跑，推送后 GitHub Actions 也会跑。
 
 ---
 

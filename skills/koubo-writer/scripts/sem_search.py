@@ -136,6 +136,8 @@ def main():
     a = ap.parse_args()
 
     blocks = all_blocks(a.scope, a.since)
+    if not blocks:
+        sys.exit("这个范围里没有可检索的块（--scope / --since 是不是太窄了？）")
     idx, vecs = load_cache()
     missing = {}
     for rel, line, t, h in blocks:
