@@ -1,6 +1,6 @@
 # invest-agent：A 股 / ETF 分析报告
 
-输入一个股票或 ETF 代码，拉最近 30 个交易日行情和财务摘要，让 GPT 写一份带表格和 Mermaid 图的中文分析报告，在浏览器里看。2026-04 写的练手项目。
+输入一个股票或 ETF 代码，拉最近 30 个交易日行情和财务摘要，让 GPT 写一份带表格和 Mermaid 图的中文分析报告，在浏览器里看。2026-04 写的练手项目，本机在 `~/Documents/agents/自己写的/invest-agent`。
 
 ## 流程
 
@@ -25,4 +25,6 @@ venv/bin/uvicorn app:app --reload
 
 ## 没放进来的
 
-本机目录 `~/Documents/agents/invest-agent/.claude/skills/` 里有 7 个 skill（question-refiner、research-executor、stock-question-refiner、stock-research-executor、got-controller、citation-validator、synthesizer），和下载的 `Claude-Code-Stock-Deep-Research-Agent` 一模一样，是别人的，没传。
+本机目录里的 `.claude/skills/` 有 7 个 skill（question-refiner、research-executor、stock-question-refiner、stock-research-executor、got-controller、citation-validator、synthesizer），是从下载的 `Claude-Code-Stock-Deep-Research-Agent` 原样复制的，是别人的，没传。那个下载的仓库 2026-10-06 已删，里面唯一有用的提示词抽到了 [股票研究八步提示词](../../prompts/股票研究八步提示词.md)。
+
+本机的虚拟环境（1G）2026-10-06 已删，要跑的话按上面重新装。

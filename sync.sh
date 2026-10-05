@@ -22,12 +22,16 @@ cp "$HOME/Documents/Obsidian Vault/CLAUDE.md" "$R/agents/writing-agent/CLAUDE.md
 mkdir -p "$R/agents/aigc-workspace"
 cp "$HOME/claude/aigc/CLAUDE.md" "$R/agents/aigc-workspace/CLAUDE.md"
 sync_dir "$HOME/claude/aigc/.claude/skills" "$R/agents/aigc-workspace/skills"
+sync_dir "$HOME/claude/aigc/references" "$R/agents/aigc-workspace/references"
 
 mkdir -p "$R/agents/eagle-aesthetic"
 cp "$HOME"/claude/eagle-aesthetic/*.py "$R/agents/eagle-aesthetic/"
 
-sync_dir "$HOME/Documents/agents/invest-agent" "$R/agents/invest-agent" \
-  --exclude README.md --exclude .env.example --exclude .env --exclude venv --exclude .claude --exclude '*.html'
+# ~/Documents/agents/自己写的/ 里的 agent（README.md、.env.example 是仓库里手写的，不覆盖）
+MINE="$HOME/Documents/agents/自己写的"
+NOPE=(--exclude README.md --exclude .env.example --exclude .env --exclude venv --exclude .venv --exclude .claude --exclude '*.html' --exclude .rag_state.json --exclude docs)
+sync_dir "$MINE/invest-agent" "$R/agents/invest-agent" $NOPE
+sync_dir "$MINE/openai-rag" "$R/agents/openai-rag" $NOPE
 
 # prompts：主库「写作与创作」里的风格提示词
 for f in 口播稿风格提示词 书面语风格提示词 文稿风格提示词; do cp "$VAULT/写作与创作/$f.md" "$R/prompts/$f.md"; done

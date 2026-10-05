@@ -43,6 +43,8 @@
 | `cinematic-director` | 第三方 wuwangzhang1216/DirectorSKILL（MIT），**魔改**：加了杜琪峰导演风格 `director_styles/21_johnnie_to.md` 和中文视觉词汇表 `visual-vocabulary-zh.md` | 把剧本 / 一段文字 / 一张关键帧变成完整的拍摄计划：节拍、分镜、走位、镜头表、关键帧和视频 prompt |
 | `image`、`video` | 第三方 smixs/visual-skills（CC-BY-4.0，要署名） | 按具体模型（GPT Image、Nano Banana、Seedance、Kling、Veo…）写生图 / 生视频提示词 |
 
+`references/seedance2-storyboard/` 是参考资料（不自动加载）：从下载的 Seedance2 分镜工作流挪过来的可套用提示词、宫斗短剧和燕青打擂台的分镜 / 剧本示例，还有一个**没启用**的 `seedance-storyboard-generator` skill，因为它和 `video` 的触发场景重叠。
+
 生成出来的角色卡和短片（`character-sheets/`、`shorts/`）没放进来。
 
 ### [eagle-aesthetic](agents/eagle-aesthetic)：Eagle 审美系统（未完成）
@@ -51,7 +53,11 @@
 
 ### [invest-agent](agents/invest-agent)：股票分析
 
-确实是自己写的（2026-04）：FastAPI 小服务，输入 A 股 / ETF 代码 → AkShare 拉行情和财务 → GPT 分别做走势 / 财务分析和风险评级 → 渲染成带表格和图的网页报告。目录里另外 7 个 deep-research skill 是从下载的 `Claude-Code-Stock-Deep-Research-Agent` 原样复制的，**不是自己的**，没传。详见[它的 README](agents/invest-agent/README.md)。
+自己写的（2026-04）：FastAPI 小服务，输入 A 股 / ETF 代码 → AkShare 拉行情和财务 → GPT 分别做走势 / 财务分析和风险评级 → 渲染成带表格和图的网页报告。目录里另外 7 个 deep-research skill 是从下载的 `Claude-Code-Stock-Deep-Research-Agent` 原样复制的，**不是自己的**，没传。详见[它的 README](agents/invest-agent/README.md)。
+
+### [openai-rag](agents/openai-rag)：OpenAI File Search（基本不用了）
+
+自己写的（2026-04）：把 Markdown / PDF 传到 OpenAI 向量库，再对它们提问。现在查笔记用 vault-ask，比它好用，留着只当 RAG 的最小示例。详见[它的 README](agents/openai-rag/README.md)。
 
 ---
 
@@ -63,8 +69,40 @@
 | [口播稿风格提示词.md](prompts/口播稿风格提示词.md) | koubo-writer 写口播稿、播客稿时读 | 口播的文风约束。和书面语那份不通用 |
 | [书面语风格提示词.md](prompts/书面语风格提示词.md) | koubo-writer 写博客、长文、Newsletter 时读 | 例句全部出自自己手写的 20 篇博文（8.4 万字） |
 | [文稿风格提示词.md](prompts/文稿风格提示词.md) | 通用写稿约束 | 从稿子库那 13 篇成稿反推出来的。注意那批成稿很多是 AI 生成的（口播稿那份里有说明），文风以上面两份为准 |
+| [股票研究八步提示词.md](prompts/股票研究八步提示词.md) | 研究一家公司时按顺序问 | 事实底座 → 行业好坏 → 怎么赚钱 → 财务质量 → 股权与治理 → 多空分歧 → 估值与护城河 → 汇总成一次 Deep Research。**别人写的**，从下载的股票尽调仓库（MIT）里抽出来的 |
 
-三份风格提示词的正本在主库「马自立」的 `写作与创作/`，koubo-writer 每次写稿都会重新读，改那边就行。
+三份风格提示词的正本在主库「马自立」的 `写作与创作/`，koubo-writer 每次写稿都会重新读，改那边就行。股票研究那份只存在这个仓库里，直接改这里。
+
+---
+
+## 本机 `~/Documents/agents`：agent 统一管理
+
+2026-10-06 整理过一次：下载来试过就没再用的删了（移到了废纸篓 `agents-cleanup-20261006`），有用的部分抽出来放进了这个仓库，剩下的分成两组。
+
+```
+~/Documents/agents/
+├── 自己写的/
+│   ├── invest-agent/              → 本仓库 agents/invest-agent（sync.sh 同步）
+│   ├── openai-rag/                → 本仓库 agents/openai-rag（sync.sh 同步）
+│   └── linuxdo-社区内容分析/       一次性的数据分析：用 Qwen 分析 linux.do 社区帖子的互动数据，有图表和 HTML 报告。不是 agent，没进仓库
+└── 下载的参考/
+    └── claude-data-analysis-main/ 别人的：用 6 个分工子 agent + 斜杠命令 + 校验 hook 做数据分析。和装好的 csv-data-analysis、data-analyse 重复，只当「多 agent 怎么分工」的参考
+```
+
+以后再下载新的 agent，放进 `下载的参考/`；自己写的放进 `自己写的/`，并在 `sync.sh` 里加一行。
+
+**2026-10-06 处理掉的：**
+
+| 原来的 | 怎么处理的 |
+|---|---|
+| Claude-Code-Stock-Deep-Research-Agent | 自带的 276 份研报都不是自己跑的；提示词抽成 [股票研究八步提示词](prompts/股票研究八步提示词.md)，原目录删 |
+| Seedance2-Storyboard-Generator | 提示词、示例和它带的 skill 挪进 aigc 的 `references/seedance2-storyboard/`，原目录删 |
+| datalogic | 《数据分析咖哥十话》的配套课程，挪到 `~/Documents/005书库与声音库/`；里面自己做的 linuxdo 分析挪到 `自己写的/` |
+| crewai_stock_analysis_system | 删：依赖一年多前的老版本 CrewAI，功能被别的股票项目覆盖 |
+| semiconductor_agent | 删：针对卓胜微的工厂调研 demo，数据全是模拟的，没留下产出 |
+| self-improving-agent（连同 `~/.learnings/`） | 删：没用起来，`~/.learnings/` 里只有空模板；Claude Code 自带记忆 |
+| dataset_info.json | 删：LLaMA-Factory 的数据集登记表，对应数据都不在 |
+| invest-agent、openai-rag 的虚拟环境 | 删，约 1.1G，要跑时重新装 |
 
 ---
 
@@ -72,5 +110,4 @@
 
 - `~/.claude/skills/` 里其余的 skill（superpowers 系列、chatcut-*、obsidian-*、csv-data-analysis、akshare-stock、us-stock-analysis 等）都是装的别人的
 - `~/claude/BoomEarth/.claude/skills/` 是克隆的开源项目 kaiteJiang/BoomEarth
-- `~/Documents/agents/` 下 `-main` 结尾的目录都是从 GitHub 下载的；`semiconductor_agent`、`openai-rag` 可能是自己写的，这次没放
 - claude.ai 上另外两个 Project「书面稿」「投资」目前没有 instructions
