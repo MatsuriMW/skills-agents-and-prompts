@@ -6,6 +6,7 @@ AI 生成内容（生图 / 生视频 / 角色设定）相关任务的工作目�
 
 - `.claude/skills/` — 本工作区专属 skill，只在 aigc 目录内启动 Claude Code 时加载
   - `character-sheet/` — 角色设定板（Character Sheet）prompt 制作
+  - `fuhuadao/` — 服化道：从分镜 / 节拍表拆出每个角色每场的服装（Look）、妆发状态、道具和连戏表，写成生图用的锁定段。产出存 `shorts/<项目>/服化道-v<N>.md`
   - `cinematic-director/` — 分镜 / 导演流程（第三方 wuwangzhang1216/DirectorSKILL，MIT）。本地加了 `director_styles/21_johnnie_to.md` 和 `references/visual-vocabulary-zh.md`，更新上游时注意保留
   - `video/`、`image/` — 按模型写生视频 / 生图提示词（第三方 smixs/visual-skills，CC-BY-4.0）
   - 各第三方 skill 的来源和 commit 记在各自目录的 `.source`

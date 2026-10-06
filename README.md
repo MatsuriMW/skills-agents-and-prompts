@@ -40,6 +40,7 @@
 | skill | 来源 | 干嘛的 |
 |---|---|---|
 | `character-sheet` | 自己写的 | 把参考图或角色描述做成锁定角色一致性的设定板 prompt（三视图、表情、服装细节等） |
+| `fuhuadao` | 自己写的（2026-10） | **服化道**：从分镜稿 / 节拍表拆出每个角色每场戏的服装套号（Look）、妆发状态、重点道具和陈设，加一张随时间变化的连戏表（胡子长度、外卖盒数量、衣服干湿）；每套造型和道具写成英文锁定段，拼进每个镜头的生图 prompt，防止 AI 每镜换一身衣服。上游接 `cinematic-director`，下游交给 `character-sheet` 和 `image` / `video` |
 | `cinematic-director` | 第三方 wuwangzhang1216/DirectorSKILL（MIT），**魔改**：加了杜琪峰导演风格 `director_styles/21_johnnie_to.md` 和中文视觉词汇表 `visual-vocabulary-zh.md` | 把剧本 / 一段文字 / 一张关键帧变成完整的拍摄计划：节拍、分镜、走位、镜头表、关键帧和视频 prompt |
 | `image`、`video` | 第三方 smixs/visual-skills（CC-BY-4.0，要署名） | 按具体模型（GPT Image、Nano Banana、Seedance、Kling、Veo…）写生图 / 生视频提示词 |
 
