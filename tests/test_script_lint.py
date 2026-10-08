@@ -67,7 +67,7 @@ def test_flags_style_problems(tmp_path):
     )
     out = run(bad, tmp_path)
     assert "翻案句" in out
-    assert "「底层逻辑」" in out and "「抓手」" in out
+    assert "底层逻辑" not in out and "抓手" not in out    # 互联网黑话可以用，不报
     assert "「大家好」" in out
     assert "2 处加粗" in out
 

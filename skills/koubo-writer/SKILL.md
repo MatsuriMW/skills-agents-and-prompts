@@ -87,7 +87,7 @@ python3 ~/.claude/skills/koubo-writer/scripts/sem_search.py "……" --scope jou
 
 ### 6. 自查，然后存
 
-先跑机械检查，它查能数出来的东西（时长、每节字数、翻案句、黑话、加粗过多、碎成一行一段、设问和 devil's advocate 有没有、画面空白、强度曲线的峰值位置）：
+先跑机械检查，它查能数出来的东西（时长、每节字数、翻案句、加粗过多、碎成一行一段、设问和 devil's advocate 有没有、画面空白、强度曲线的峰值位置）：
 
 ```bash
 python3 ~/.claude/skills/koubo-writer/scripts/script_lint.py 稿子.md            # 长文加 --form article
