@@ -8,6 +8,7 @@
 用法：
   sem_search.py "一段话或一个想法" ["第二个说法" ...]   # 多个说法会分别检索再合并
   sem_search.py "……" --top 20 --scope journal|notes|all --since 2024-01-01
+  sem_search.py "……" --scope expr      # 只在「表达与典故素材库」里找：素材库/ 下带「类别」的页 + 全库标了 [[有趣的表达]] 的块
 输出：每条一行出处（路径:行号）+ 原文（截断），按相关度排序。
 """
 import argparse, hashlib, json, os, re, sys, urllib.request
@@ -23,6 +24,8 @@ EXCLUDE_FILES = {"计划与总结/库周报.md"}
 PRIVATE = re.compile(r"\[\[(?:[^\]|]*/)?(?:宝a|宝)(?:[|#\]])")   # 这些块不拿来当素材
 JOURNAL = re.compile(r"^(\d{4})[_-](\d{1,2})[_-](\d{1,2})$")
 LIST = re.compile(r"^([-*+]|\d+[.)])\s")
+EXPR_DIR = "素材库/"
+FUNNY = re.compile(r"\[\[(?:[^\]|]*/)?(?:有趣的表达|搞笑的表达)(?:[|#\]])")
 
 
 def blocks_of(text, base):
@@ -104,7 +107,15 @@ def all_blocks(scope, since):
                 text = open(p, encoding="utf-8").read()
             except Exception:
                 continue
+            # 表达素材库：素材库/ 下 frontmatter 有「类别」的页整页要；别处只要标了 [[有趣的表达]] 的块
+            expr_page = rel.startswith(EXPR_DIR) and re.match(r"^---\n(?:.*\n)*?类别:", text) is not None
+            if scope == "expr" and not expr_page and not FUNNY.search(text):
+                continue
             for line, t in blocks_of(text, base):
+                if scope == "expr" and not expr_page and not FUNNY.search(t):
+                    continue
+                if scope == "expr" and line == 0 and expr_page:
+                    continue   # 页名块不是素材
                 t = t[:1200]
                 out.append((rel, line, t, hashlib.sha1(t.encode("utf-8")).hexdigest()[:20]))
     return out
@@ -130,7 +141,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("queries", nargs="+")
     ap.add_argument("--top", type=int, default=15)
-    ap.add_argument("--scope", choices=["all", "journal", "notes"], default="all")
+    ap.add_argument("--scope", choices=["all", "journal", "notes", "expr"], default="all")
     ap.add_argument("--since", help="只看这天之后的日记，YYYY-MM-DD")
     ap.add_argument("--width", type=int, default=260, help="每条原文显示多少字")
     a = ap.parse_args()
