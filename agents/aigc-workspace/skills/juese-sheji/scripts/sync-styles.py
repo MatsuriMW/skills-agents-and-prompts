@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""从 Obsidian 主库「马自立」的 审美/风格/*.md（type: 审美风格）生成 references/styles/服装风格.md。
+"""从一个 Obsidian 风格库（一个风格一篇笔记，frontmatter 写 type: 审美风格）生成 references/styles/服装风格.md。
 
-主库是正本：在 Obsidian 里加风格页、改单品、写「我的笔记」，跑一次这个脚本就同步进 skill。
-用法：python3 scripts/sync-styles.py [风格目录]
+风格库是正本：在 Obsidian 里加风格页、改单品、写「我的笔记」，跑一次这个脚本就同步进 skill。
+页面格式见 references/styles/索引.md 的「用你自己的风格库」。
+
+用法：
+  python3 scripts/sync-styles.py <风格目录>
+  JUESE_STYLE_DIR=<风格目录> python3 scripts/sync-styles.py
 """
 import json
 import os
@@ -11,7 +15,6 @@ import re
 import sys
 
 SKILL = pathlib.Path(__file__).resolve().parent.parent
-DEFAULT = pathlib.Path.home() / "Library/Mobile Documents/iCloud~md~obsidian/Documents/马自立/审美/风格"
 OUT = SKILL / "references/styles/服装风格.md"
 
 
@@ -50,13 +53,16 @@ def as_list(v):
 
 
 def main():
-    src = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT
+    src = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("JUESE_STYLE_DIR")
+    if not src or not pathlib.Path(src).expanduser().is_dir():
+        sys.exit("用法：python3 scripts/sync-styles.py <风格目录>（或设置环境变量 JUESE_STYLE_DIR）")
+    src = pathlib.Path(src).expanduser()
     styles = [s for s in (parse(p) for p in sorted(src.glob("*.md"))) if s]
     styles.sort(key=lambda s: (s["fm"].get("类别", ""), int(s["fm"].get("排序") or 999), s["name"]))
     out = [
         "# 服装风格",
         "",
-        f"由 `scripts/sync-styles.py` 从主库「马自立」的 `审美/风格/` 生成（{len(styles)} 个风格），**不要手改这个文件**：改主库的风格页再跑脚本。",
+        f"由 `scripts/sync-styles.py` 从一个 Obsidian 风格库生成（{len(styles)} 个风格；随 skill 发布的这一份来自作者马自立的风格库）。**不要手改这个文件**：改风格页再跑脚本，见 `索引.md` 的「用你自己的风格库」。",
         "",
         "用法见 `索引.md`。落到人物身上时，从「经典单品」里挑 3–5 件，按 `../dimensions/04-服装.md` 往下切到款式、版型、面料、穿法；配色直接用 HEX；「要当心」那一条通常就是这个人的破绽或者可以反转的地方。",
         "品牌只作风格参照、帮你想起具体的样子，锁定段里不写品牌和 logo，换成款式描述。",
@@ -89,7 +95,7 @@ def main():
             out.append("- **细分**：")
             out += [f"  - {x}" for x in s["subs"]]
         if s["notes"]:
-            out.append("- **马自立的笔记**：")
+            out.append("- **笔记**：")
             out += ["  " + l if l.startswith("-") else "  - " + l.strip() for l in s["notes"]]
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text("\n".join(out) + "\n", encoding="utf-8")

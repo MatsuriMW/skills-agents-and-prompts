@@ -19,5 +19,13 @@ AI 生成内容（生图 / 生视频 / 角色设定）相关任务的工作目�
 
 ## 约定
 
+- 角色设计（juese-sheji）时：用户本人有服装分类（绅装 / 工装 / 国潮，美式复古 / 阿美咔叽），可以借这套词汇，但角色不是用户本人，按角色逻辑来。
+- 风格库同步：用户在主库改了风格页后，在 `.claude/skills/juese-sheji` 下跑 `python3 scripts/sync-styles.py ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/马自立/审美/风格`。
+- juese-sheji 有独立的公开仓库（交付给别人用的版本），本地这份是正本，改完在仓库目录跑 `./sync.sh`，见下面「仓库」。
 - 生成内容按任务类型分目录存放，不要散落在根目录。
 - 同一角色的迭代放在同一目录下，用版本号区分。
+
+## 仓库
+
+- `~/claude/ai-character-design-skill` → github.com/MatsuriMW/ai-character-design-skill：juese-sheji 的独立交付版（README、install.sh、MIT、Release 里有 claude.ai 用的 zip）。改完本地 skill 在那个目录跑 `./sync.sh "说明"`；要发新版本再打 zip（`zip -qr dist/juese-sheji.zip juese-sheji -x '*.DS_Store'`）并 `gh release create vX.Y.Z dist/juese-sheji.zip`
+- `~/claude/aigc-skills-and-agents` → github.com/MatsuriMW/aigc-skills-and-agents：AIGC skill 合集（juese-sheji + character-sheet），`./sync.sh`

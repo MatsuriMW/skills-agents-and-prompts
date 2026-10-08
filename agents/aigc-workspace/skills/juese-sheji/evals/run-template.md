@@ -1,6 +1,6 @@
 # 评测记录：{{模型名 + 版本}}（{{YYYY-MM-DD}}）
 
-- 平台 / 入口：{{ChatCut image-gen / 即梦 / …}}
+- 平台 / 入口：{{即梦 / 可灵 / Midjourney / GPT Image / Nano Banana / ChatCut / …}}
 - 设置：{{比例、质量档、是否加参考图}}
 - 跑了哪些用例：{{1、3}}
 

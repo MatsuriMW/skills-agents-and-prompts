@@ -33,7 +33,7 @@ Keep this outfit identical in every shot.
 
 ```
 [镜头描述：景别、机位、构图、动作]
-[CHARACTER LOCK — 来自 character-sheet，只取长相部分]
+[CHARACTER LOCK — 来自角色设定板或模式 E 生图锁定段的身份层，只取长相部分]
 [WARDROBE LOCK — 本场 Look]
 [MAKEUP & HAIR LOCK — 本场妆发状态]
 [PROP LOCK — 本镜出现的重点道具，最多 2 个]
@@ -43,7 +43,7 @@ Keep this outfit identical in every shot.
 
 特写镜头可以只拼看得见的部分（脸部特写不拼鞋），但**不要改写**，只删整行。
 
-和 character-sheet 一起用：设定板里的服装就是这个角色的 Look A。角色换装后，**不要**重做设定板，而是在镜头 prompt 里用新 Look 的锁定段替换服装部分，并加一句 `Same person as the reference image, wearing a different outfit as described below.`
+和角色设定板一起用：设定板里的服装就是这个角色的 Look A。角色换装后，**不要**重做设定板，而是在镜头 prompt 里用新 Look 的锁定段替换服装部分，并加一句 `Same person as the reference image, wearing a different outfit as described below.`
 
 ## 常见翻车与对策
 
