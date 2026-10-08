@@ -4,7 +4,7 @@
   script_lint.py 稿子.md                 # 检查：时长、画面空白、情绪曲线、风格硬规则
   script_lint.py 稿子.md --clean         # 只输出要念的字（提词版），标注全部去掉
   script_lint.py 稿子.md --shotlist      # 按 [!画面] / [!声音] 标注生成「分镜与素材清单」表
-  script_lint.py 稿子.md --form article  # 长文：不查画面空白和口播四件套
+  script_lint.py 稿子.md --form article  # 书面稿：不查画面和情绪线（设问、devil's advocate、信源照查，文章稿总章要求的）
 
 它查的都是能数出来的东西；好不好听、像不像他，还得人读。
 """
@@ -12,11 +12,10 @@ import argparse, re, sys
 
 CPM = 280            # 口播语速：字 / 分钟
 GAP_SEC = 25         # 出镜之外，画面空白超过这么多秒就提醒
-SKIP_SECTIONS = re.compile(r"情绪线|分镜|素材清单|来源|录制前|速查|附[：:]|参考")
+SKIP_SECTIONS = re.compile(r"情绪线|分镜|素材清单|来源|信源|待核|录制前|速查|附[：:]|参考")
 CUE = re.compile(r"^>\s*\[!(节奏|画面|声音|配图)\]\s*(.*)$")
 # 风格提示词「不要出现的东西」里能机械查的
 FLIP = re.compile(r"(?:不是|并非|不在于|不只是)[^。！？!?\n]{1,40}?(?:而是|而在于)")
-JARGON = ["赋能", "抓手", "底层逻辑", "闭环", "颗粒度", "生态位", "链路", "心智", "打法", "沉淀", "对齐", "拉通", "组合拳"]
 HEDGE = ["这是一个复杂的话题", "每个人情况不同", "仅供参考", "今天我想和大家聊聊", "今天想和大家聊", "大家好"]
 DEVIL = re.compile(r"有人(?:就)?会(?:问|说)|你可能会(?:说|问|觉得)|当然.{0,20}(?:绝对|片面|极端)|反过来(?:说|想)|话说回来")
 
@@ -139,9 +138,6 @@ def main():
 
     for m in FLIP.finditer(body):
         warn.append(f"翻案句（他说这个句式像 AI，直接从正面下判断）：「{m.group(0)[:40]}」")
-    for w in JARGON:
-        if w in body:
-            warn.append(f"模型腔 / 黑话：「{w}」")
     for w in HEDGE:
         if w in body:
             warn.append(f"叠甲 / 寒暄式开场：「{w}」")
@@ -153,13 +149,14 @@ def main():
         warn.append(f"{len(short)}/{len(says)} 段不到 22 个字——碎成一行一段了。句子之间要接住，说成连贯的一串")
     stars = len(re.findall(r"【★", text))
 
+    # 文章稿总章要求每篇都有的（书面稿、口播稿都查）
+    if "？" not in body and "?" not in body:
+        warn.append("没有设问或反问")
+    if not DEVIL.search(body):
+        warn.append("没找到 devil's advocate（「那有人就会问了」「当然我这样说有点绝对」这一类）")
+    if not re.search(r"^#{1,3}\s*.*(来源|信源)", text, re.M):
+        warn.append("文末没有「信源」")
     if a.form == "koubo":
-        if "？" not in body and "?" not in body:
-            warn.append("没有设问或反问")
-        if not DEVIL.search(body):
-            warn.append("没找到 devil's advocate（「那有人就会问了」「当然我这样说有点绝对」这一类）")
-        if not re.search(r"^#{1,3}\s*.*来源", text, re.M):
-            warn.append("文末没有来源清单")
         # 画面空白：从上一个非「出镜」的画面算起，出镜标注会把计时归零（那是有意对着镜头说）
         cues = [x for x in timeline if x[2] == "画面"]
         if not cues:

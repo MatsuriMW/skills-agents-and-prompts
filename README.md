@@ -10,11 +10,15 @@
 
 装在 `~/.claude/skills/`，任何目录下启动 Claude Code 都能用。
 
+**写作规则分三层**（2026-10-09 定）：① `wenzhanggao` + 主库《文章稿风格提示词》是总章，所有书面稿默认按它，口播稿也拿它打底；② `koubo-writer` + 《口播稿风格提示词》只在要做成视频 / 口播稿时叠加；③ `human-writing` 只当通用纪律。冲突时按这个顺序听。
+
 | skill | 干嘛的 | 什么时候触发 |
 |---|---|---|
-| [koubo-writer](skills/koubo-writer) | **写稿流水线**：一个选题 → 从主库「马自立」语义检索日记和笔记备料 → 素材不够先追问 → 定一句话主张、骨架、情绪线 → 按自己的风格提示词成稿，同时定好每段的画面（B-roll、插画、字卡）→ 机械检查 + 自查 → 存进稿子库并回链选题页。`scripts/sem_search.py` 按意思检索主库，`scripts/script_lint.py` 检查稿子 | 「写口播稿」「出一版稿」「把这个选题写出来」「再来一版」 |
+| [wenzhanggao](skills/wenzhanggao) | **文章稿（默认写作）**：写文章、改文章都走它，按主库《文章稿风格提示词》（claude.ai Project「文章稿」的 instructions + 细则例句）写：暴论、设问、devil's advocate、加粗核心论点、英文原名、文末信源。从选题写成文章时借 koubo-writer 的找选题、备料、存稿流程，不做视频层 | 「写一篇」「改这篇」「写成文章 / 博客 / 公众号 / 长文」，没说形式的写稿 |
+| [koubo-writer](skills/koubo-writer) | **口播稿流水线**：一个选题 → 从主库「马自立」语义检索日记和笔记备料 → 素材不够先追问 → 定一句话主张、骨架、情绪线 → 按文章稿总章打底、叠加口播稿风格提示词成稿，同时定好每段的画面（B-roll、插画、字卡）→ 机械检查 + 自查 → 存进稿子库并回链选题页。`scripts/sem_search.py` 按意思检索主库，`scripts/script_lint.py` 检查稿子（书面稿也用它，加 `--form article`） | 只在说要做成视频 / 口播稿 / 播客稿、提到分镜 / 提词版 / 录制时 |
 | [vault-ask](skills/vault-ask) | **问自己的笔记**：在主库「马自立」里跨笔记问答、用笔记素材写提纲，结论都带可点的 `[[双链出处]]`，结果存回库里 | 「我记过哪些关于 X 的」「我对 Y 的看法怎么变的」「翻翻我的日记」 |
 | [wardrobe-intake](skills/wardrobe-intake) | **衣橱入库**：把自己已经有的衣服、鞋、配饰登记进主库的 `穿搭/衣橱/`，一件一张卡片。想买的不进 | 发衣服照片或购买链接，说「入库」「记进衣橱」；日记里带 `#衣橱` 的块 |
+| [human-writing](skills/human-writing) | **通用写作纪律**（第三方 MIT，本地魔改，不升级）：材料不够不灌水、事实要核、不写翻案腔。魔改过的地方：删了黑话禁词、排比三项上限、破折号和冒号禁令，加了「多用强逻辑结构表达」，注明在文章稿和 koubo-writer 之后 | 写别人的、非他本人的中文稿子；他自己的稿子只借纪律 |
 | [gudianshi-skill](skills/gudianshi-skill) | **古典式配图**：给口播稿、文章画「古典质感 + 现代之刺」风格的解释图，版画、多雷 / 丢勒式插画加现代元素，只出 1600×900 的 SVG | 「古典式」「给稿子配图」「做个概念图 / 封面」 |
 
 `gudianshi-skill` 是在 claude.ai 上建的，本机那份是桌面端自动同步下来的（`~/.claude/skills/synced/…`），改要去 claude.ai 改。
@@ -25,10 +29,10 @@
 
 ### [writing-agent](agents/writing-agent)：写稿 agent
 
-不是单独的程序，是「稿子库 + koubo-writer + 风格提示词」这一套：
+不是单独的程序，是「稿子库 + wenzhanggao / koubo-writer + 风格提示词」这一套：
 
-- `CLAUDE.md`：稿子库 `~/Documents/Obsidian Vault` 的工作规则。这个库只放正在写和写完的稿子；它和主库「马自立」怎么互相链接（选题页的 `稿件:`、稿子的 `素材:`）；在这里写稿用 `koubo-writer`；新版本另存不覆盖；AI 写的稿子标 `作者: AI 初稿`，不能当成本人文风样本
-- 写稿流程本身在 [skills/koubo-writer](skills/koubo-writer)
+- `CLAUDE.md`：稿子库 `~/Documents/Obsidian Vault` 的工作规则。这个库只放正在写和写完的稿子；它和主库「马自立」怎么互相链接（选题页的 `稿件:`、稿子的 `素材:`）；书面稿用 `wenzhanggao`、要做成视频才用 `koubo-writer`；新版本另存不覆盖；AI 写的稿子标 `作者: AI 初稿`，不能当成本人文风样本
+- 写稿流程本身在 [skills/wenzhanggao](skills/wenzhanggao)（文章）和 [skills/koubo-writer](skills/koubo-writer)（口播）
 - 文风约束在 [prompts/](prompts) 里的几份风格提示词
 
 在 `~/Documents/Obsidian Vault` 里启动 Claude Code 就是这个 agent。
@@ -66,13 +70,13 @@
 
 | 文件 | 用在哪 | 内容 |
 |---|---|---|
-| [claude-project-文章稿.md](prompts/claude-project-文章稿.md) | claude.ai 的 Project「文章稿」的 instructions | 自媒体稿子的写法：不煽动焦虑、要有活人感、核心论点加粗、术语不稀释但第一次出现要解释；每篇至少一处辛辣嘲讽、一处设问、一处自我反驳（devil's advocate）；外国人名和术语括号标英文，论文标作者和年份，结尾单列「信源」；文章框架和去矫饰的要求 |
-| [口播稿风格提示词.md](prompts/口播稿风格提示词.md) | koubo-writer 写口播稿、播客稿时读 | 口播的文风约束。和书面语那份不通用 |
-| [书面语风格提示词.md](prompts/书面语风格提示词.md) | koubo-writer 写博客、长文、Newsletter 时读 | 例句全部出自自己手写的 20 篇博文（8.4 万字） |
-| [文稿风格提示词.md](prompts/文稿风格提示词.md) | 通用写稿约束 | 从稿子库那 13 篇成稿反推出来的。注意那批成稿很多是 AI 生成的（口播稿那份里有说明），文风以上面两份为准 |
+| [文章稿风格提示词.md](prompts/文章稿风格提示词.md) | **总章**：wenzhanggao、koubo-writer、稿件台都读 | 第一部分是 claude.ai Project「文章稿」的 instructions 原文（硬要求）；第二部分是细则和例句，2026-10-09 由原《书面语风格提示词》（20 篇博文整理）和《文稿风格提示词》合并而来，那两份已退役 |
+| [口播稿风格提示词.md](prompts/口播稿风格提示词.md) | koubo-writer、稿件台写口播稿时叠加在总章上 | 口播增量：写给耳朵、句子密度、`~` 和 `【】` 标记、录制前速查、两个版本交付 |
+| [文白交杂风格提示词.md](prompts/文白交杂风格提示词.md) | 稿件台「文白交杂」、要求更文白时 | 以总章为底，只说文白混杂要往前推多少（草稿，待审） |
+| [claude-project-文章稿.md](prompts/claude-project-文章稿.md) | 旧抄录，只留作出处 | 10-05 从 claude.ai 抄下来的 instructions，现在正本是上面的总章第一部分。原说明：自媒体稿子的写法：不煽动焦虑、要有活人感、核心论点加粗、术语不稀释但第一次出现要解释；每篇至少一处辛辣嘲讽、一处设问、一处自我反驳（devil's advocate）；外国人名和术语括号标英文，论文标作者和年份，结尾单列「信源」；文章框架和去矫饰的要求 |
 | [股票研究八步提示词.md](prompts/股票研究八步提示词.md) | 研究一家公司时按顺序问 | 事实底座 → 行业好坏 → 怎么赚钱 → 财务质量 → 股权与治理 → 多空分歧 → 估值与护城河 → 汇总成一次 Deep Research。**别人写的**，从下载的股票尽调仓库（MIT）里抽出来的 |
 
-三份风格提示词的正本在主库「马自立」的 `写作与创作/`，koubo-writer 每次写稿都会重新读，改那边就行。股票研究那份只存在这个仓库里，直接改这里。
+风格提示词的正本在主库「马自立」的 `写作与创作/`，wenzhanggao、koubo-writer、稿件台每次都会重新读，改那边就行。总章第一部分改了，要手动贴到 claude.ai Project「文章稿」的 instructions。退役的两份在主库 `写作与创作/已退役/`。股票研究那份只存在这个仓库里，直接改这里。
 
 ---
 

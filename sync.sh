@@ -1,7 +1,7 @@
 #!/bin/zsh
 # 把散落在本机各处的自制 skill / agent / 提示词同步进这个仓库，然后提交推送。
 # 只复制源码和提示词；虚拟环境、模型、索引、.env、生成的成品都不进仓库。
-# prompts/claude-project-*.md 存的是 claude.ai 云端 Project 的 instructions，本机没有副本，要手动更新。
+# 文章稿风格提示词的第一部分就是 claude.ai Project「文章稿」的 instructions，正本在主库，改了要手动贴到 claude.ai。
 # 用法：./sync.sh [提交说明]
 set -e
 R="${0:A:h}"
@@ -11,7 +11,7 @@ EX=(--exclude .DS_Store --exclude __pycache__ --exclude .cache --exclude '*.pyc'
 sync_dir() { mkdir -p "$2"; rsync -a --delete $EX "${@:3}" "$1/" "$2/"; }
 
 # skills：用户级（~/.claude/skills）
-for s in koubo-writer vault-ask wardrobe-intake; do sync_dir "$HOME/.claude/skills/$s" "$R/skills/$s"; done
+for s in wenzhanggao koubo-writer vault-ask wardrobe-intake human-writing; do sync_dir "$HOME/.claude/skills/$s" "$R/skills/$s"; done
 # skills：在 claude.ai 上建的，桌面端同步下来的副本
 sync_dir "$SYNCED/gudianshi-skill" "$R/skills/gudianshi-skill"
 
@@ -33,8 +33,8 @@ NOPE=(--exclude README.md --exclude .env.example --exclude .env --exclude venv -
 sync_dir "$MINE/invest-agent" "$R/agents/invest-agent" $NOPE
 sync_dir "$MINE/openai-rag" "$R/agents/openai-rag" $NOPE
 
-# prompts：主库「写作与创作」里的风格提示词
-for f in 口播稿风格提示词 书面语风格提示词 文稿风格提示词; do cp "$VAULT/写作与创作/$f.md" "$R/prompts/$f.md"; done
+# prompts：主库「写作与创作」里的风格提示词（文章稿是总章，口播稿是口播增量，文白交杂是可选的一层）
+for f in 文章稿风格提示词 口播稿风格提示词 文白交杂风格提示词; do cp "$VAULT/写作与创作/$f.md" "$R/prompts/$f.md"; done
 
 cd "$R"
 git add -A
