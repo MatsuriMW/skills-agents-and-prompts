@@ -27,5 +27,5 @@ AI 生成内容（生图 / 生视频 / 角色设定）相关任务的工作目�
 
 ## 仓库
 
-- `~/claude/ai-character-design-skill` → github.com/MatsuriMW/ai-character-design-skill：juese-sheji 的独立交付版（README、install.sh、MIT、Release 里有 claude.ai 用的 zip）。改完本地 skill 在那个目录跑 `./sync.sh "说明"`；要发新版本再打 zip（`zip -qr dist/juese-sheji.zip juese-sheji -x '*.DS_Store'`）并 `gh release create vX.Y.Z dist/juese-sheji.zip`
+- `~/claude/ai-character-design-skill` → github.com/MatsuriMW/ai-character-design-skill：juese-sheji 的独立交付版（README、install.sh、MIT、Release 里有 claude.ai 用的 zip）。改完本地 skill 在那个目录跑 `./sync.sh "说明"`；sync.sh 会顺手用 `package.py` 重新打 `dist/juese-sheji.zip`（别用 macOS 的 zip，中文文件名会乱码）；发新版本 `gh release create vX.Y.Z dist/juese-sheji.zip`，或者给现有版本换附件 `gh release upload vX.Y --clobber dist/juese-sheji.zip`
 - `~/claude/aigc-skills-and-agents` → github.com/MatsuriMW/aigc-skills-and-agents：AIGC skill 合集（juese-sheji + character-sheet），`./sync.sh`
