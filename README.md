@@ -15,7 +15,7 @@
 | skill | 干嘛的 | 什么时候触发 |
 |---|---|---|
 | [wenzhanggao](skills/wenzhanggao) | **文章稿（默认写作）**：写文章、改文章都走它，按主库《文章稿风格提示词》（claude.ai Project「文章稿」的 instructions + 细则例句）写：暴论、设问、devil's advocate、加粗核心论点、英文原名、文末信源。从选题写成文章时借 koubo-writer 的找选题、备料、存稿流程，不做视频层 | 「写一篇」「改这篇」「写成文章 / 博客 / 公众号 / 长文」，没说形式的写稿 |
-| [koubo-writer](skills/koubo-writer) | **口播稿流水线**：一个选题 → 从主库「马自立」语义检索日记和笔记备料 → 素材不够先追问 → 定一句话主张、骨架、情绪线 → 按文章稿总章打底、叠加口播稿风格提示词成稿，同时定好每段的画面（B-roll、插画、字卡）→ 机械检查 + 自查 → 存进稿子库并回链选题页。`scripts/sem_search.py` 按意思检索主库，`scripts/script_lint.py` 检查稿子（书面稿也用它，加 `--form article`） | 只在说要做成视频 / 口播稿 / 播客稿、提到分镜 / 提词版 / 录制时 |
+| [koubo-writer](skills/koubo-writer) | **口播稿流水线**：一个选题 → 从主库「马自立」语义检索日记和笔记备料 → 素材不够先追问 → 定一句话主张、骨架、情绪线 → 按文章稿总章打底、叠加口播稿风格提示词成稿，同时定好每段的画面（B-roll、插画、字卡）→ 机械检查 + 自查 → 存进主库 `稿件/` 并回链选题页。`scripts/sem_search.py` 按意思检索主库，`scripts/script_lint.py` 检查稿子（书面稿也用它，加 `--form article`） | 只在说要做成视频 / 口播稿 / 播客稿、提到分镜 / 提词版 / 录制时 |
 | [vault-ask](skills/vault-ask) | **问自己的笔记**：在主库「马自立」里跨笔记问答、用笔记素材写提纲，结论都带可点的 `[[双链出处]]`，结果存回库里 | 「我记过哪些关于 X 的」「我对 Y 的看法怎么变的」「翻翻我的日记」 |
 | [wardrobe-intake](skills/wardrobe-intake) | **衣橱入库**：把自己已经有的衣服、鞋、配饰登记进主库的 `穿搭/衣橱/`，一件一张卡片。想买的不进 | 发衣服照片或购买链接，说「入库」「记进衣橱」；日记里带 `#衣橱` 的块 |
 | [human-writing](skills/human-writing) | **通用写作纪律**（第三方 MIT，本地魔改，不升级）：材料不够不灌水、事实要核、不写翻案腔。魔改过的地方：删了黑话禁词、排比三项上限、破折号和冒号禁令，加了「多用强逻辑结构表达」，注明在文章稿和 koubo-writer 之后 | 写别人的、非他本人的中文稿子；他自己的稿子只借纪律 |
@@ -29,13 +29,13 @@
 
 ### [writing-agent](agents/writing-agent)：写稿 agent
 
-不是单独的程序，是「稿子库 + wenzhanggao / koubo-writer + 风格提示词」这一套：
+不是单独的程序，是「主库 + wenzhanggao / koubo-writer + 风格提示词 + 稿件台插件」这一套。**2026-10-09 起只用主库「马自立」一个库**，新稿子写进主库 `稿件/`，选题页 `稿件:` 写成双链；旧的稿子库 `~/Documents/Obsidian Vault` 先不动，慢慢搬：
 
-- `CLAUDE.md`：稿子库 `~/Documents/Obsidian Vault` 的工作规则。这个库只放正在写和写完的稿子；它和主库「马自立」怎么互相链接（选题页的 `稿件:`、稿子的 `素材:`）；书面稿用 `wenzhanggao`、要做成视频才用 `koubo-writer`；新版本另存不覆盖；AI 写的稿子标 `作者: AI 初稿`，不能当成本人文风样本
+- `CLAUDE.md`：旧稿子库 `~/Documents/Obsidian Vault` 的工作规则（开头已注明不再写新稿）。这个库只放正在写和写完的稿子；它和主库「马自立」怎么互相链接（选题页的 `稿件:`、稿子的 `素材:`）；书面稿用 `wenzhanggao`、要做成视频才用 `koubo-writer`；新版本另存不覆盖；AI 写的稿子标 `作者: AI 初稿`，不能当成本人文风样本
 - 写稿流程本身在 [skills/wenzhanggao](skills/wenzhanggao)（文章）和 [skills/koubo-writer](skills/koubo-writer)（口播）
 - 文风约束在 [prompts/](prompts) 里的几份风格提示词
 
-在 `~/Documents/Obsidian Vault` 里启动 Claude Code 就是这个 agent。
+在主库目录里启动 Claude Code，或在 Obsidian 主库里用 Claudian，说「写一篇」「写成口播稿」就是这个 agent。
 
 ### [aigc-workspace](agents/aigc-workspace)：生图 / 生视频 / 角色设定
 
