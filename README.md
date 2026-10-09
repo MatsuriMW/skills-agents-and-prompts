@@ -29,9 +29,51 @@
 | [koubo-writer](skills/koubo-writer)（口播稿流水线） | 一个选题 → 按意思检索自己的日记和笔记备料 → 素材不够先追问 → 定一句话主张、骨架和情绪线 → 成稿，同时规划每段的画面（B-roll、插画、字卡）→ 机械检查 → 存回库里。带两个脚本：`sem_search.py` 语义检索笔记，`script_lint.py` 检查稿子 | ★ | Obsidian 库；本机 Ollama + EmbeddingGemma（和 [第二大脑](https://github.com/MatsuriMW/Obsidian-Plugins/tree/main/second-brain) 插件共用向量缓存） |
 | [vault-ask](skills/vault-ask)（问自己的笔记） | 在 Obsidian 库里跨笔记问答、用笔记素材写提纲，每个结论都带可点击的 `[[双链出处]]`，结果存回库里 | ★ | Obsidian 库 |
 | [wardrobe-intake](skills/wardrobe-intake)（衣橱入库） | 发一张衣服照片或购买链接，登记成库里的一张衣橱卡片：品类、颜色、材质、图案等字段按模板填，信息不够的留空、不乱猜，最后告诉你还要补什么 | ★ | Obsidian 库 |
-| [chrome-tabgroup-to-obsidian](skills/chrome-tabgroup-to-obsidian)（Chrome 标签组入库） | 把 Chrome 里保存的标签组导出成一篇 Obsidian 笔记：视频 / 文章分块、去追踪参数的干净链接、关键词 `[[]]` 双链、查作者，并按 SuperTags 标签的字段键名填 `键:: 值`。带一个纯标准库的脚本 `read_chrome_tabgroups.py`，直接读 Chrome 同步数据库（LevelDB + Snappy），是整套流程的关键 | ★★★ | Chrome（标签组要保存过）；Obsidian 库；SuperTags 插件可选 |
+| [chrome-tabgroup-to-obsidian](skills/chrome-tabgroup-to-obsidian)（Chrome 标签组入库） | 把 Chrome 里保存的标签组导出成一篇 Obsidian 笔记：视频 / 文章分块、去追踪参数的干净链接、关键词 `[[]]` 双链、查作者，并按 SuperTags 标签的字段键名填 `键:: 值`。带一个纯标准库的脚本 `read_chrome_tabgroups.py`，直接读 Chrome 同步数据库（LevelDB + Snappy），是整套流程的关键。详见下面 [单独一小节](#chrome-tabgroup-to-obsidian把攒着的标签页变成一篇笔记) | ★★ | Chrome（标签组要保存过）；Obsidian 库（要改路径）；SuperTags 插件可选 |
 
 **写作类 skill 的分工**：`wenzhanggao` 是默认的写作 skill，所有书面稿都按它的风格提示词写；`koubo-writer` 只在要做成视频时叠加口播的要求；`human-writing` 只当通用纪律。三者冲突时按这个顺序。
+
+### chrome-tabgroup-to-obsidian：把攒着的标签页变成一篇笔记
+
+**它解决什么**。浏览器里攒了一个标签组（比如「商业分析」），十几个视频加文章，一关就再也找不回来。这个 skill 把整组一次性搬进 Obsidian：视频 / 文章分块、去掉追踪参数的干净链接、查作者、抽关键词做成 `[[双链]]`，最后落成一篇能直接翻的清单。
+
+**难点在取数据，不在整理**。Chrome 的已保存标签组不写在 `Sessions/` 的会话文件里（那些只反映当前窗口，组一关就没了），而是在 `Sync Data/LevelDB`，且 SSTable 用 **Snappy 压缩**——标准库和常见的 leveldb 包都读不了。`scripts/read_chrome_tabgroups.py` 用纯标准库实现了 Snappy 解压 + LevelDB（SSTable / WAL）解析 + protobuf 解码，这是整套流程里唯一没法临时凑出来的部分，也是这个 skill 真正值钱的地方。
+
+用法：
+
+```bash
+python3 scripts/read_chrome_tabgroups.py --list-groups            # 有哪些组
+python3 scripts/read_chrome_tabgroups.py --group 商业分析          # 看某组
+python3 scripts/read_chrome_tabgroups.py --group 商业分析 --json   # 要结构化数据
+```
+
+它会按组内的 `position` 还原原本的顺序，输出标题 + URL。之后交给模型做剩下的事：B 站走官方 `x/web-interface/view` 接口查 UP 主（免登录），知乎常被反爬，就用正文里的自引用兜底；视频打 `#towatch`、文章打 `#toread`；字段按 SuperTags 标签里 `frontmatterTemplate` + `fields` 两处的键名，写成列表子项 `键:: 值`。
+
+产出大概是这个样子（缩进用 Tab）：
+
+```markdown
+- 视频
+	- 【硬核】一口气了解外汇 #towatch
+		- 链接：https://www.bilibili.com/video/BV1iW42197dP/
+		- 类别:: 视频（B站）
+		- 状态:: 想看
+		- 作者:: [[小林说]]
+		- def:: 一句话摘要
+		- 关键词：[[外汇]] [[汇率]]
+- 文章
+	- 行业研究框架和 26 个常用商业模型 #toread
+		- 链接：https://zhuanlan.zhihu.com/p/328076946
+		- author:: yulang
+		- 关键词：[[行业研究]] [[商业模型]]
+```
+
+**要改成你自己的**：`SKILL.md` 的「默认环境」写死了我的 Obsidian 库路径、`阅读收藏/` 目录和 SuperTags 插件的位置，换成你的即可；不用 SuperTags 就跳过填字段那一步，其余照常。所以推荐度是 ★★ 而不是 ★★★——脚本通用，但路径要自己填。
+
+**已知边界**：
+
+- 只认**已保存**的标签组（存在同步数据里的那种），临时开着的窗口会话不保证能取到。
+- 插件的字段键名以你自己的 `data.json` 为准，SKILL 里记的是我的配置快照；插件改了要同步更新 `references/supertags-fields.md`。
+- 插件的 `watchFolders` 一般只有 `日记/`，放在别处的笔记不会被自动处理成新页面——字段是「预先填好」，不是自动建页。
 
 ---
 
