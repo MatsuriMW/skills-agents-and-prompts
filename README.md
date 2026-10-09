@@ -4,6 +4,12 @@
 
 大部分东西的正本在本机各处，这里是副本：改了之后跑 `./sync.sh "改了什么"`，会从本机重新复制、提交、推送。只有 `prompts/claude-project-*.md` 是从 claude.ai 云端抄下来的，要手动更新。
 
+**相关仓库**（也是自己的，各自单独维护）：
+
+- [ai-character-design-skill](https://github.com/MatsuriMW/ai-character-design-skill)：角色设计 skill（juese-sheji）的独立版，可以直接交给别人装
+- [aigc-skills-and-agents](https://github.com/MatsuriMW/aigc-skills-and-agents)：AIGC 用的其他 skill（角色设定板 character-sheet）
+- [Obsidian-Plugins](https://github.com/MatsuriMW/Obsidian-Plugins)：自己做 / 改过的 Obsidian 插件
+
 ---
 
 ## skills/：单个 skill
@@ -43,8 +49,8 @@
 
 | skill | 来源 | 干嘛的 |
 |---|---|---|
-| `character-sheet` | 自己写的 | 把参考图或角色描述做成锁定角色一致性的设定板 prompt（三视图、表情、服装细节等） |
-| `fuhuadao` | 自己写的（2026-10） | **服化道**，当成角色设计的一部分，三个模式：① **检验**：审一套造型是否符合年代、地域、阶层（不确定就联网查证），能不能读出角色性格和弧光，有没有一句话就能记住的记忆点，五个维度打分并给出问题清单和改法；② **创意风暴**：用反差、物件叙事、色彩隐喻等方法发散 4–6 个截然不同的造型方向，再按「真、准、记得住」收敛推荐；③ **设计落地**：从分镜稿 / 节拍表拆出造型（Look）、妆发状态、道具和连戏表，写成英文锁定段拼进每个镜头的生图 prompt。上游接 `cinematic-director`，下游交给 `character-sheet` 和 `image` / `video` |
+| `juese-sheji` | 自己写的（2026-10，原名 `fuhuadao`「服化道」） | **角色设计**：把「轻佻的男性」「一个老年人」这种模糊感觉拆成脸、发型、配饰、服装、体态、生活痕迹、微表情、说话方式，写成模型能直接执行的名词和动作；另有人物原型图鉴（122 张）、创意风暴、服化道落地（造型 / 妆发 / 道具 / 连戏表 + 英文锁定段）、检验、群像拉开、风格库。**已经独立成仓库 [ai-character-design-skill](https://github.com/MatsuriMW/ai-character-design-skill)**（带安装脚本和 claude.ai 用的 zip），对外以那里为准。上游接 `cinematic-director`，下游交给 `character-sheet` 和 `image` / `video` |
+| `character-sheet` | 自己写的 | 把参考图或角色描述做成锁定角色一致性的设定板 prompt（三视图、表情、服装细节等）。对外版本在 [aigc-skills-and-agents](https://github.com/MatsuriMW/aigc-skills-and-agents) |
 | `cinematic-director` | 第三方 wuwangzhang1216/DirectorSKILL（MIT），**魔改**：加了杜琪峰导演风格 `director_styles/21_johnnie_to.md` 和中文视觉词汇表 `visual-vocabulary-zh.md` | 把剧本 / 一段文字 / 一张关键帧变成完整的拍摄计划：节拍、分镜、走位、镜头表、关键帧和视频 prompt |
 | `image`、`video` | 第三方 smixs/visual-skills（CC-BY-4.0，要署名） | 按具体模型（GPT Image、Nano Banana、Seedance、Kling、Veo…）写生图 / 生视频提示词 |
 
@@ -113,6 +119,6 @@
 
 ## 本机还有、但没放进来的
 
-- `~/.claude/skills/` 里其余的 skill（superpowers 系列、chatcut-*、obsidian-*、csv-data-analysis、akshare-stock、us-stock-analysis 等）都是装的别人的
+- `~/.claude/skills/` 里其余的 skill 都是装的别人的：superpowers 系列、chatcut-*（ChatCut 桌面端自带）、obsidian-*、seedance-*、huashu-art-motion、video-shotcraft、guizang-ppt-skill、csv-data-analysis、akshare-stock、us-stock-analysis 等
 - `~/claude/BoomEarth/.claude/skills/` 是克隆的开源项目 kaiteJiang/BoomEarth
 - claude.ai 上另外两个 Project「书面稿」「投资」目前没有 instructions
