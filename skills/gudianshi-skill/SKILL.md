@@ -5,9 +5,17 @@ description: 古典式skill。为口播视频、视频文稿、文章制作「�
 
 # 古典式 skill
 
-一种给口播和文章配图的视觉语言：**底下是版画／旧纸的质感，上面插一个纯色、硬边、只属于屏幕时代的现代元素。**图是讲述的形象化，不是讲述的替代品。
+一种给口播和文章配图的视觉语言：**底下是版画／旧纸的质感，上面插一个纯色、硬边、只属于屏幕时代的现代元素**。图是讲述的形象化，不是讲述的替代品。
 
-**输出格式只有 SVG。**不输出 PNG、JPG、HTML 页面、React 组件，不给生图模型写 prompt，也不建议用户改去 PS 拼贴。所有质感都用 SVG 原生手段（pattern 排线、路径、渐变暗角）实现。
+**输出格式只有 SVG**。不输出 PNG、JPG、HTML 页面、React 组件，不给生图模型写 prompt，也不建议用户改去 PS 拼贴。所有质感都用 SVG 原生手段（pattern 排线、路径、渐变暗角）实现。
+
+![A 对切：1179 年的尖拱墓碑与 2026 年的卡片 UI，同一枚硬币骑在分割线上](https://cdn.jsdelivr.net/gh/MatsuriMW/skills-agents-and-prompts@765d40a/skills/gudianshi-skill/examples/04_%E5%90%8C%E4%B8%80%E6%9E%9A%E7%A1%AC%E5%B8%81%E4%B8%A4%E5%A5%97%E5%88%A4%E5%86%B3.svg)
+
+![古典物件 + 读数工具：台阶上的金币，旁边的刻度尺套着一个选中框](https://cdn.jsdelivr.net/gh/MatsuriMW/skills-agents-and-prompts@765d40a/skills/gudianshi-skill/examples/01_%E5%88%BB%E5%BA%A6%E5%9C%A8%E5%8A%A8.svg)
+
+![古典轮盘：印钞 → 长债 → 回购 → 短债，轮心是一个加载圈](https://cdn.jsdelivr.net/gh/MatsuriMW/skills-agents-and-prompts@765d40a/skills/gudianshi-skill/examples/02_%E5%80%9F%E7%9F%AD%E8%BF%98%E9%95%BF%E7%A9%BA%E8%BD%AC.svg)
+
+更多样图见第十节和 `examples/`。
 
 ## 一、三条总原则
 
@@ -48,7 +56,7 @@ description: 古典式skill。为口播视频、视频文稿、文章制作「�
 
 规则：
 - **一张图只放一个刺**（一组算一个，比如点赞手 + 它的角标）。两个就变装饰。
-- **刺通常要小。**小的硬物在大片柔软里，比大的更暴力。
+- **刺通常要小**。小的硬物在大片柔软里，比大的更暴力。
 - 刺放在**视觉动线的终点**：人物视线所指、手所指、光照到的地方。
 - 读数工具优于裁决工具：用杆秤、尺、水位尺、刻度盘表达「标准在变」；**不要用天平**（天平暗示有固定砝码，会替反方说话）。
 
