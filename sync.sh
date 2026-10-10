@@ -12,8 +12,8 @@ sync_dir() { mkdir -p "$2"; rsync -a --delete $EX "${@:3}" "$1/" "$2/"; }
 
 # skills：用户级（~/.claude/skills）
 for s in wenzhanggao koubo-writer vault-ask wardrobe-intake human-writing chrome-tabgroup-to-obsidian; do sync_dir "$HOME/.claude/skills/$s" "$R/skills/$s"; done
-# skills：在 claude.ai 上建的，桌面端同步下来的副本
-sync_dir "$SYNCED/gudianshi-skill" "$R/skills/gudianshi-skill"
+# skills：在 claude.ai 上建的，桌面端同步下来的副本（examples/ 样图只在仓库里，同步时保留）
+sync_dir "$SYNCED/gudianshi-skill" "$R/skills/gudianshi-skill" --exclude examples
 
 # agents
 mkdir -p "$R/agents/writing-agent"

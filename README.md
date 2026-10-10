@@ -23,7 +23,7 @@
 
 | skill | 作用 | 推荐度 | 需要什么 |
 |---|---|---|---|
-| [gudianshi-skill](skills/gudianshi-skill)（古典式配图） | 给文章、口播稿画「古典质感 + 现代之刺」风格的解释图：版画、多雷 / 丢勒式插画，配一处现代元素制造反差。只输出 1600×900 的 SVG 矢量图，可以直接改 | ★★★ | 无 |
+| [gudianshi-skill](skills/gudianshi-skill)（古典式配图） | 给文章、口播稿画「古典质感 + 现代之刺」风格的解释图：版画、多雷 / 丢勒式插画，配一处现代元素制造反差。只输出 1600×900 的 SVG 矢量图，可以直接改。[`examples/`](skills/gudianshi-skill/examples) 里有 7 张成品可以先看效果；SkillHub 上也能装（slug `gudianshi`） | ★★★ | 无 |
 | [human-writing](skills/human-writing)（写作纪律，改版） | 通用的中文写作和改稿纪律：材料不够不灌水、事实要核、不写空洞的翻案腔。改自一个 MIT 协议的第三方 skill：去掉了黑话禁词表、「排比最多三项」和破折号 / 冒号的禁令，加了「多用强逻辑结构表达」 | ★★★ | 无 |
 | [wenzhanggao](skills/wenzhanggao)（文章稿） | 写文章、改文章的完整流程：按一份风格提示词写（暴论开头、设问、自我反驳、核心论点加粗、外国术语标英文、文末列信源），从选题写时先去笔记里找素材 | ★ | 一份你自己的风格提示词；Obsidian 库 |
 | [koubo-writer](skills/koubo-writer)（口播稿流水线） | 一个选题 → 按意思检索自己的日记和笔记备料 → 素材不够先追问 → 定一句话主张、骨架和情绪线 → 成稿，同时规划每段的画面（B-roll、插画、字卡）→ 机械检查 → 存回库里。带两个脚本：`sem_search.py` 语义检索笔记，`script_lint.py` 检查稿子 | ★ | Obsidian 库；本机 Ollama + EmbeddingGemma（和 [第二大脑](https://github.com/MatsuriMW/Obsidian-Plugins/tree/main/second-brain) 插件共用向量缓存） |
