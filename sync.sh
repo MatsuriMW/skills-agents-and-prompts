@@ -10,6 +10,11 @@ SYNCED=("$HOME"/.claude/skills/synced/*(/N[1]))
 EX=(--exclude .DS_Store --exclude __pycache__ --exclude .cache --exclude '*.pyc')
 sync_dir() { mkdir -p "$2"; rsync -a --delete $EX "${@:3}" "$1/" "$2/"; }
 
+# 准入标准：这个仓库只放「我自己做的、我制作的，或者我改动过的」东西。
+# 从别处原样下载的 skill / agent 一律不进这里 —— 它们只留在同步库 skillshare-source
+# （~/.config/skills，是 skillshare 的正本，40+ 个 skill 都在那儿，机器产物、不追求可读性）。
+# 所以下面这个名单就是策展本身：加进来 = 声明「这是我的作品 / 我改过它」。
+
 # skills：用户级（~/.claude/skills）
 for s in wenzhanggao koubo-writer vault-ask wardrobe-intake human-writing chrome-tabgroup-to-obsidian winston-how-to-speak; do sync_dir "$HOME/.claude/skills/$s" "$R/skills/$s"; done
 # skills：在 claude.ai 上建的，桌面端同步下来的副本（examples/ 样图只在仓库里，同步时保留）
