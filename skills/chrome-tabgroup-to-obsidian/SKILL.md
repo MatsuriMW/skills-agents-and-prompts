@@ -1,5 +1,6 @@
 ---
 name: chrome-tabgroup-to-obsidian
+user-invocable: true
 description: 把 Chrome 里保存的标签组（Tab Groups）导出成 Markdown 清单，归类为视频/文章、查作者、抽关键词双链，并按 SuperTags（自用）插件的字段键名填进 Obsidian 库。别名 / 触发词：chrometoob、chrometoobsidian、chrome2obsidian、chrome2ob、chrome to obsidian、标签组导出、tabgroup-to-obsidian、tabgroup to obsidian。当用户说「把 Chrome 标签组 X 整理到 Obsidian」「导出我的标签组」「把待看/待读的标签页收进库里」时使用。
 ---
 
