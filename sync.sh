@@ -6,28 +6,32 @@
 set -e
 R="${0:A:h}"
 VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/马自立"
-SYNCED=("$HOME"/.claude/skills/synced/*(/N[1]))
+SS="$HOME/.config/skillshare/skills"   # skill 的正本：skillshare 源，这个仓库只从那里单向导出
 EX=(--exclude .DS_Store --exclude __pycache__ --exclude .cache --exclude '*.pyc')
 sync_dir() { mkdir -p "$2"; rsync -a --delete $EX "${@:3}" "$1/" "$2/"; }
 
-# 准入标准：这个仓库只放「我自己做的、我制作的，或者我改动过的」东西。
-# 从别处原样下载的 skill / agent 一律不进这里 —— 它们只留在同步库 skillshare-source
-# （~/.config/skills，是 skillshare 的正本，40+ 个 skill 都在那儿，机器产物、不追求可读性）。
+# 在 skillshare 源里按名字找 skill，不管它放在哪个分组
+ss_skill() {
+  local d=("$SS"/$1(/N) "$SS"/*/$1(/N))
+  [[ -n "$d[1]" ]] || { echo "skillshare 源里找不到 skill：$1" >&2; return 1 }
+  print -r -- "$d[1]"
+}
+
+# 准入标准：这个仓库只放「我自己做的，或者我改动过的」通用 skill、agent 和提示词。
+# - 原样下载的 skill 不进这里，只留在 skillshare 源（私有库 skillshare-source）。
+# - AIGC 相关的（古典式配图、角色设定板、aigc 工作区）放 aigc-skills-and-agents，不放这里。
+# - 单独建了仓库的 skill 不再留副本，README 里留一行链接。
 # 所以下面这个名单就是策展本身：加进来 = 声明「这是我的作品 / 我改过它」。
 
-# skills：用户级（~/.claude/skills）
-for s in wenzhanggao koubo-writer vault-ask wardrobe-intake human-writing chrome-tabgroup-to-obsidian winston-how-to-speak; do sync_dir "$HOME/.claude/skills/$s" "$R/skills/$s"; done
-# skills：在 claude.ai 上建的，桌面端同步下来的副本（examples/ 样图只在仓库里，同步时保留）
-sync_dir "$SYNCED/gudianshi-skill" "$R/skills/gudianshi-skill" --exclude examples
+# skills
+for s in wenzhanggao koubo-writer vault-ask wardrobe-intake human-writing chrome-tabgroup-to-obsidian winston-how-to-speak; do
+  src=$(ss_skill $s) || exit 1
+  sync_dir "$src" "$R/skills/$s"
+done
 
 # agents
 mkdir -p "$R/agents/writing-agent"
 cp "$HOME/Documents/Obsidian Vault/CLAUDE.md" "$R/agents/writing-agent/CLAUDE.md"
-
-mkdir -p "$R/agents/aigc-workspace"
-cp "$HOME/claude/aigc/CLAUDE.md" "$R/agents/aigc-workspace/CLAUDE.md"
-sync_dir "$HOME/claude/aigc/.claude/skills" "$R/agents/aigc-workspace/skills"
-sync_dir "$HOME/claude/aigc/references" "$R/agents/aigc-workspace/references"
 
 mkdir -p "$R/agents/eagle-aesthetic"
 cp "$HOME"/claude/eagle-aesthetic/*.py "$R/agents/eagle-aesthetic/"

@@ -1,10 +1,10 @@
 # Skills, Agents and Prompts
 
-马自立（[@MatsuriMW](https://github.com/MatsuriMW)）自己写的、或者改过的 [Claude Code](https://claude.com/claude-code) skill、agent 和提示词，主要用来**写作**（文章、口播稿）、**整理自己的笔记**，外加几个 AI 生图和投资研究的小项目。
+马自立（[@MatsuriMW](https://github.com/MatsuriMW)）自己写的、或者改过的 [Claude Code](https://claude.com/claude-code) skill、agent 和提示词，主要用来**写作**（文章、口播稿）、**整理自己的笔记**，外加投资研究和找图的几个小项目。AI 生图、生视频相关的在另一个仓库 [aigc-skills-and-agents](https://github.com/MatsuriMW/aigc-skills-and-agents)。
 
 这些东西本来是为我自己的 Obsidian 库和写作习惯做的，所以分成两类看：
 
-- **可以直接拿去用的**：古典式配图、写作纪律、风格提示词、股票研究提示词，换个人也照样能用。
+- **可以直接拿去用的**：写作纪律、讲座方法、风格提示词、股票研究提示词，换个人也照样能用。
 - **可以参考着改的**：写稿流水线、笔记问答这些 skill，里面写死了我的库路径和目录约定。它们最有价值的是**流程设计**：怎么从自己的笔记里找素材、怎么定主张和骨架、怎么做机械检查。换成你的库路径就能跑。
 
 ## 推荐度怎么看
@@ -23,7 +23,6 @@
 
 | skill | 作用 | 推荐度 | 需要什么 |
 |---|---|---|---|
-| [gudianshi-skill](skills/gudianshi-skill)（古典式配图） | 给文章、口播稿画「古典质感 + 现代之刺」风格的解释图：版画、多雷 / 丢勒式插画，配一处现代元素制造反差。只输出 1600×900 的 SVG 矢量图，可以直接改。[`examples/`](skills/gudianshi-skill/examples) 里有 7 张成品可以先看效果；SkillHub 上也能装（slug `gudianshi`） | ★★★ | 无 |
 | [human-writing](skills/human-writing)（写作纪律，改版） | 通用的中文写作和改稿纪律：材料不够不灌水、事实要核、不写空洞的翻案腔。改自一个 MIT 协议的第三方 skill：去掉了黑话禁词表、「排比最多三项」和破折号 / 冒号的禁令，加了「多用强逻辑结构表达」 | ★★★ | 无 |
 | [winston-how-to-speak](skills/winston-how-to-speak)（讲座方法） | 讲座 / 演讲 / 答辩 / job talk / 汇报的**设计与审查**方法：开场用「赋能承诺」而不是笑话、主张绕着说三遍、给自己的idea建围栏、用口头标点给走神的人留上车点；幻灯片只是调味品不能当主菜、最后一页写 Contributions、最后一句不能是 Thank you。提炼自 MIT Patrick Winston《How to Speak》（2018，约一小时，十亿次播放） | ★★★ | 无 |
 | [wenzhanggao](skills/wenzhanggao)（文章稿） | 写文章、改文章的完整流程：按一份风格提示词写（暴论开头、设问、自我反驳、核心论点加粗、外国术语标英文、文末列信源），从选题写时先去笔记里找素材 | ★ | 一份你自己的风格提示词；Obsidian 库 |
@@ -83,12 +82,9 @@ python3 scripts/read_chrome_tabgroups.py --group 商业分析 --json   # 要结�
 | agent | 作用 | 推荐度 | 需要什么 |
 |---|---|---|---|
 | [writing-agent](agents/writing-agent) | 写稿 agent 的工作区规则（`CLAUDE.md`）：Obsidian 库里选题页和稿子怎么互相链接、什么时候用哪个写作 skill、AI 初稿怎么标注、新版本另存不覆盖。配合上面的写作 skill 和 [prompts/](prompts) 一起用 | ★ | 上面的写作 skill |
-| [aigc-workspace](agents/aigc-workspace) | AI 短片前期的工作区：从剧本到分镜、角色设计、角色设定板，再到按具体模型写生图 / 生视频 prompt。包含自己写的 [角色设计 juese-sheji](https://github.com/MatsuriMW/ai-character-design-skill) 和 [角色设定板 character-sheet](https://github.com/MatsuriMW/aigc-skills-and-agents)，以及改过的导演 skill（加了杜琪峰风格和中文视觉词汇表）和第三方的生图 / 生视频 prompt skill | ★★ | Claude Code；生图 / 生视频平台 |
 | [invest-agent](agents/invest-agent) | 输入一个 A 股或 ETF 代码，拉行情和财务数据，让 GPT 分别做走势分析、财务分析和风险评级，生成带表格和图的网页报告。FastAPI 小服务 | ★★ | Python；OpenAI API key |
 | [eagle-aesthetic](agents/eagle-aesthetic) | 给 Eagle 素材库建「按感觉找图」：用 SigLIP2 把几千张海报做成向量索引，一句话或一张参考图就能找出气质相近的图，并给没分类的图推荐风格。对 Eagle 只读。**还没做完** | ★ | Python；Eagle |
 | [openai-rag](agents/openai-rag) | 最小的 RAG 示例：把 Markdown / PDF 传到 OpenAI 的向量库，再对它们提问 | ★ | Python；OpenAI API key |
-
-`aigc-workspace` 里的第三方 skill 按原许可证收录：导演 skill 来自 [wuwangzhang1216/DirectorSKILL](https://github.com/wuwangzhang1216/DirectorSKILL)（MIT，有改动），`image` / `video` 来自 [smixs/visual-skills](https://github.com/smixs/visual-skills)（CC-BY-4.0）。
 
 ---
 
@@ -107,5 +103,5 @@ python3 scripts/read_chrome_tabgroups.py --group 商业分析 --json   # 要结�
 ## 相关仓库
 
 - [ai-character-design-skill](https://github.com/MatsuriMW/ai-character-design-skill)：把「一个轻佻的男性」这种模糊感觉拆成生图模型能执行的描述，AI 短片的角色设计 skill（有安装脚本，可以直接交给别人用）
-- [aigc-skills-and-agents](https://github.com/MatsuriMW/aigc-skills-and-agents)：角色设定板等 AIGC skill
+- [aigc-skills-and-agents](https://github.com/MatsuriMW/aigc-skills-and-agents)：AI 生图、生视频相关的 skill 和工作区配置：角色设定板、古典式配图、改过的导演 skill
 - [Obsidian-Plugins](https://github.com/MatsuriMW/Obsidian-Plugins)：我做的 / 改过的 30 多个 Obsidian 插件，写作 skill 用到的本地语义检索就在里面
