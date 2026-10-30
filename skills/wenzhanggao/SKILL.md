@@ -34,7 +34,7 @@ description: 文章稿：陈晨（马自立）写文章、改文章的默认 ski
 | 商业分析 | `~/.claude/skills/strategist-voice/SKILL.md` | Damodaran、Ben Thompson 式的分析师文风，脚注引用 |
 | 商业分析（公众号向） | `~/.claude/skills/liurun-writing-assistant/SKILL.md` | SCQA、公众号结构、标题和金句 |
 
-**冲突时听文风 skill**，它就是用来改掉总章里不适合这种文体的地方的。只有一条底线不让：事实、引语、数据要真，拿不准的进「待核」，不编。`op-ed-writer` 和 `strategist-voice` 是英文写的，照它们的写作规则写中文；只对英文成立的规则（比如禁用 em dash）换成总章里对应的中文标点规范。动笔前把这篇里两边冲突、你打算听文风 skill 的地方列给他看一眼。
+**冲突时听文风 skill。** 文风 skill 是总章往这种文体上的特化，既然往这种文体上特化，冲突的地方就以它为标准。只有一条底线不让：事实、引语、数据要真，拿不准的进「待核」，不编。`op-ed-writer` 和 `strategist-voice` 是英文写的，照它们的写作规则写中文；只对英文成立的规则（比如禁用 em dash）换成总章里对应的中文标点规范。动笔前把这篇里两边冲突、你打算听文风 skill 的地方列给他看一眼。
 
 他没点名文体，就只按总章写。
 
