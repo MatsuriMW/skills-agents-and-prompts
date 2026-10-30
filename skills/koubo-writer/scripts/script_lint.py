@@ -17,7 +17,7 @@ CUE = re.compile(r"^>\s*\[!(节奏|画面|声音|配图)\]\s*(.*)$")
 # 风格提示词「不要出现的东西」里能机械查的
 FLIP = re.compile(r"(?:不是|并非|不在于|不只是)[^。！？!?\n]{1,40}?(?:而是|而在于)")
 HEDGE = ["这是一个复杂的话题", "每个人情况不同", "仅供参考", "今天我想和大家聊聊", "今天想和大家聊", "大家好"]
-DEVIL = re.compile(r"有人(?:就)?会(?:问|说)|你可能会(?:说|问|觉得)|当然.{0,20}(?:绝对|片面|极端)|反过来(?:说|想)|话说回来")
+DEVIL = re.compile(r"(?:当然|并)不是说|再确切一点|换个问法|有人(?:就)?会(?:问|说)|你可能会(?:说|问|觉得)|当然.{0,20}(?:绝对|片面|极端)|反过来(?:说|想)|话说回来")
 
 
 def spoken_len(s):
@@ -137,7 +137,7 @@ def main():
     raw = "\n".join(x[3] for x in says)
 
     for m in FLIP.finditer(body):
-        warn.append(f"翻案句（他说这个句式像 AI，直接从正面下判断）：「{m.group(0)[:40]}」")
+        warn.append(f"翻案句（确认是在纠正读者真会有的误解，不是立靶子再推倒；一篇里别多）：「{m.group(0)[:40]}」")
     for w in HEDGE:
         if w in body:
             warn.append(f"叠甲 / 寒暄式开场：「{w}」")
@@ -153,7 +153,7 @@ def main():
     if "？" not in body and "?" not in body:
         warn.append("没有设问或反问")
     if not DEVIL.search(body):
-        warn.append("没找到 devil's advocate（「那有人就会问了」「当然我这样说有点绝对」这一类）")
+        warn.append("没找到 devil's advocate（「这当然不是说……」「或者再确切一点说」、括号里的限定这一类）")
     if not re.search(r"^#{1,3}\s*.*(来源|信源)", text, re.M):
         warn.append("文末没有「信源」")
     if a.form == "koubo":
