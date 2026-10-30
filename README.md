@@ -31,7 +31,26 @@
 | [wardrobe-intake](skills/wardrobe-intake)（衣橱入库） | 发一张衣服照片或购买链接，登记成库里的一张衣橱卡片：品类、颜色、材质、图案等字段按模板填，信息不够的留空、不乱猜，最后告诉你还要补什么 | ★ | Obsidian 库 |
 | [chrome-tabgroup-to-obsidian](skills/chrome-tabgroup-to-obsidian)（Chrome 标签组入库） | 把 Chrome 里保存的标签组导出成一篇 Obsidian 笔记：视频 / 文章分块、去追踪参数的干净链接、关键词 `[[]]` 双链、查作者，并按 SuperTags 标签的字段键名填 `键:: 值`。带一个纯标准库的脚本 `read_chrome_tabgroups.py`，直接读 Chrome 同步数据库（LevelDB + Snappy），是整套流程的关键。详见下面 [单独一小节](#chrome-tabgroup-to-obsidian把攒着的标签页变成一篇笔记) | ★★ | Chrome（标签组要保存过）；Obsidian 库（要改路径）；SuperTags 插件可选 |
 
-**写作类 skill 的分工**：`wenzhanggao` 是默认的写作 skill，所有书面稿都按它的风格提示词写；`koubo-writer` 只在要做成视频时叠加口播的要求；`human-writing` 只当通用纪律。三者冲突时按这个顺序。
+**写作类 skill 的分工**：`wenzhanggao` 是默认的写作 skill，所有书面稿都按它的风格提示词写；`koubo-writer` 只在要做成视频时叠加口播的要求；`human-writing` 只当通用纪律。三者冲突时按这个顺序。点名某种文体时再叠一层文风 skill，见下一节。
+
+### 文风 skill 和触发词
+
+`wenzhanggao` 读的那份风格提示词（总章）是所有稿子的底。点名某种文体时，再叠一个专门写这种文体的 skill。文体 skill 是总章往这种文体上的特化，所以两边冲突的地方以文体 skill 为准；只有一条不让：事实、引语、数据要真，拿不准的标「待核」，不编。
+
+说下表里的触发词，就会走「总章 + 文风 skill」这条路：
+
+| 文风 | 触发词 | 用到的 skill | 来源 |
+|---|---|---|---|
+| 文章稿（默认） | 「文章稿」，或者直接说写 / 改一篇文章、博客、公众号、知乎回答、Newsletter、推文、小红书笔记 | `wenzhanggao` | 本仓库 |
+| 口播稿 | 「口播稿」「视频稿」「播客稿」「演讲稿」，或者说要做成视频、录视频要讲 | `wenzhanggao` 的总章 + `koubo-writer` | 本仓库 |
+| 技术写作 | 「技术写作」 | `wenzhanggao` + `zh-tech-writing` | [leter/zh-tech-writing](https://github.com/leter/zh-tech-writing) |
+| 社会评论 | 「社会评论」「社评」 | `wenzhanggao` + `op-ed-writer` | [SkillMedev/skills](https://github.com/SkillMedev/skills/tree/main/skills/op-ed-writer) |
+| 商业分析 | 「商业分析」 | `wenzhanggao` + `strategist-voice` | [lyndonkl/claude](https://github.com/lyndonkl/claude/tree/main/skills/strategist-voice) |
+| 商业分析（公众号向） | 「刘润式」 | `wenzhanggao` + `liurun-writing-assistant` | [SkillHub](https://skillhub.cn/skills/user_cae83fba/liurun-writing-assistant) |
+
+- 后四个文体 skill 是原样下载的第三方 skill，没放进本仓库，要用就从来源装。
+- 直接点第三方 skill 的名字（比如「用 op-ed-writer 写」），只会调起它自己，不会读总章。要两层叠着用，就说触发词。
+- 口播稿是例外：口播那份提示词只补写给耳朵听的部分，和总章冲突时听总章。
 
 ### chrome-tabgroup-to-obsidian：把攒着的标签页变成一篇笔记
 
