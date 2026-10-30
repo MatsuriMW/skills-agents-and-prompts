@@ -24,7 +24,7 @@ ss_skill() {
 # 所以下面这个名单就是策展本身：加进来 = 声明「这是我的作品 / 我改过它」。
 
 # skills
-for s in wenzhanggao koubo-writer vault-ask wardrobe-intake human-writing chrome-tabgroup-to-obsidian winston-how-to-speak; do
+for s in wenzhanggao koubo-writer vault-ask wardrobe-intake yifu-shihe-wo human-writing chrome-tabgroup-to-obsidian winston-how-to-speak; do
   src=$(ss_skill $s) || exit 1
   sync_dir "$src" "$R/skills/$s"
 done
