@@ -29,7 +29,7 @@
 | [koubo-writer](skills/koubo-writer)（口播稿流水线） | 一个选题 → 按意思检索自己的日记和笔记备料 → 素材不够先追问 → 定一句话主张、骨架和情绪线 → 成稿，同时规划每段的画面（B-roll、插画、字卡）→ 机械检查 → 存回库里。带两个脚本：`sem_search.py` 语义检索笔记，`script_lint.py` 检查稿子 | ★ | Obsidian 库；本机 Ollama + EmbeddingGemma（和 [第二大脑](https://github.com/MatsuriMW/Obsidian-Plugins/tree/main/second-brain) 插件共用向量缓存） |
 | [vault-ask](skills/vault-ask)（问自己的笔记） | 在 Obsidian 库里跨笔记问答、用笔记素材写提纲，每个结论都带可点击的 `[[双链出处]]`，结果存回库里 | ★ | Obsidian 库 |
 | [wardrobe-intake](skills/wardrobe-intake)（衣橱入库） | 发一张衣服照片或购买链接，登记成库里的一张衣橱卡片：品类、颜色、材质、图案等字段按模板填，信息不够的留空、不乱猜，最后告诉你还要补什么 | ★ | Obsidian 库 |
-| [yifu-shihe-wo](skills/yifu-shihe-wo)（这件衣服适合我吗） | 发一件衣服的截图、试衣照或链接，判断它放在你身上合不合适、值不值得买：颜色和脸、版型和比例（衣长落在身上哪儿，拿你最合身的那件衣服对尺码表）、气质、值不值，落到「闭眼入 / 看你怎么穿 / 劝退」三档之一，附上还想买的话怎么穿、更适合你的是什么。也能只问一项（「显黑吗」「拿 M 还是 L」）或者两个颜色二选一。纯提示词，不带脚本，能装进豆包 | ★★★ | 能看图的 AI（豆包、Claude 等） |
+| [yifu-shihe-wo](skills/yifu-shihe-wo)（这件衣服适合我吗） | 发一件衣服的截图、试衣照或链接，判断它放在你身上合不合适、值不值得买：颜色和脸、版型和比例（衣长落在身上哪儿，拿你最合身的那件衣服对尺码表）、气质、值不值，落到「闭眼入 / 看你怎么穿 / 劝退」三档之一，附上还想买的话怎么穿、更适合你的是什么。也能只问一项（「显黑吗」「拿 M 还是 L」）或者两个颜色二选一。纯提示词，不带脚本，能装进豆包。手机上发截图；电脑上能操作已登录浏览器的 AI 可以直接贴商品链接（见 skill 里的 README） | ★★★ | 能看图的 AI（豆包、Claude 等） |
 | [chrome-tabgroup-to-obsidian](skills/chrome-tabgroup-to-obsidian)（Chrome 标签组入库） | 把 Chrome 里保存的标签组导出成一篇 Obsidian 笔记：视频 / 文章分块、去追踪参数的干净链接、关键词 `[[]]` 双链、查作者，并按 SuperTags 标签的字段键名填 `键:: 值`。带一个纯标准库的脚本 `read_chrome_tabgroups.py`，直接读 Chrome 同步数据库（LevelDB + Snappy），是整套流程的关键。详见下面 [单独一小节](#chrome-tabgroup-to-obsidian把攒着的标签页变成一篇笔记) | ★★ | Chrome（标签组要保存过）；Obsidian 库（要改路径）；SuperTags 插件可选 |
 
 **写作类 skill 的分工**：`wenzhanggao` 是默认的写作 skill，所有书面稿都按它的风格提示词写；`koubo-writer` 只在要做成视频时叠加口播的要求；`human-writing` 只当通用纪律。三者冲突时按这个顺序。点名某种文体时再叠一层文风 skill，见下一节。
