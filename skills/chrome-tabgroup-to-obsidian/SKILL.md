@@ -63,8 +63,6 @@ description: 把 Chrome 里保存的标签组（Tab Groups）导出成 Markdown 
 ---
 aliases:
   - X
-tags:
-  - 收藏/阅读清单
 source: Chrome 标签组「X」
 date: YYYY-MM-DD
 ---
@@ -106,6 +104,7 @@ date: YYYY-MM-DD
 - `#towatch` / `#toread` / `#tolisten` 都设了 `fields`（2026-10-10 起），键名要把 `frontmatterTemplate` 和 `fields` 两处合起来读；
   有可选值的（`# 后面`）从里面挑。改插件配置前先问用户。
 - 摘要（`def`）只写基于标题/页面可见信息能支撑的内容，别编造视频里讲没讲过什么。
+- 笔记头部不写 `tags`：文件夹 `阅读收藏/` 已经说明它是收藏，主题靠条目里的双链。条目上的标签只用 `#towatch` / `#toread`，这两个有看板在读。全库规则见主库 `计划与总结/标签与双链.md`。
 
 ## 完成前自查
 
